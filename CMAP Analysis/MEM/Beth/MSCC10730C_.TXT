@@ -1,0 +1,212 @@
+
+MScan data loaded from C:\Users\cntl_user\Desktop\Mohammed\Beth\MSCC10730C.MEM
+Name: MScanFitForm
+Number of points in scan = 660
+
+
+n                   	MinMicroV           	range(%)            	n points            	n units             	Error
+1                   	2.4                 	12                  	124                 	5.59
+2                   	2.6                 	13                  	119                 	9.52
+3                   	2.8                 	14                  	123                 	11.74
+4                   	3                   	15                  	127                 	8.87
+5                   	3.2                 	16                  	117                 	10.39
+6                   	3.4                 	17                  	115                 	8.85
+7                   	3.6                 	18                  	114                 	9.82
+8                   	3.8                 	19                  	117                 	9.82
+9                   	4                   	20                  	118                 	4.73
+10                  	4.2                 	21                  	114                 	3.87
+11                  	4.5                 	22                  	116                 	9.11
+12                  	4.7                 	23                  	115                 	6.98
+13                  	4.9                 	24                  	112                 	6.9
+14                  	5.1                 	25                  	117                 	7.62
+15                  	5.3                 	26                  	110                 	8.64
+16                  	5.5                 	27                  	111                 	12.39
+17                  	5.7                 	28                  	113                 	8.62
+18                  	5.9                 	29                  	113                 	9.8
+19                  	6.1                 	30                  	111                 	8.09
+20                  	6.4                 	31                  	109                 	11.45
+21                  	6.6                 	32                  	107                 	11.4
+22                  	6.8                 	33                  	106                 	8.39
+23                  	7                   	34                  	107                 	11.79
+24                  	7.2                 	35                  	107                 	8.99
+25                  	7.4                 	36                  	103                 	9.26
+26                  	7.6                 	37                  	102                 	9.55
+27                  	7.9                 	38                  	101                 	9.01
+28                  	8.1                 	39                  	101                 	9.66
+29                  	8.3                 	40                  	101                 	9.19
+
+Best 10
+1                   	4.2                 	21                  	114                 	3.87
+2                   	4                   	20                  	118                 	4.73
+3                   	2.4                 	12                  	124                 	5.59
+4                   	4.9                 	24                  	112                 	6.9
+5                   	4.7                 	23                  	115                 	6.98
+6                   	5.1                 	25                  	117                 	7.62
+7                   	6.1                 	30                  	111                 	8.09
+8                   	6.8                 	33                  	106                 	8.39
+9                   	5.7                 	28                  	113                 	8.62
+10                  	5.3                 	26                  	110                 	8.64
+
+n                   	MinMicroV           	range(%)            	n points            	n units             	Error
+1                   	2.4                 	12                  	124                 	4.98
+2                   	2.6                 	13                  	119                 	9.16
+3                   	2.8                 	14                  	123                 	11.1
+4                   	3                   	15                  	127                 	7.85
+5                   	3.2                 	16                  	117                 	10.2
+6                   	3.4                 	17                  	115                 	7.77
+7                   	3.6                 	18                  	114                 	8.89
+8                   	3.8                 	19                  	117                 	8.54
+9                   	4                   	20                  	118                 	3.74
+10                  	4.2                 	21                  	114                 	3.03
+11                  	4.5                 	22                  	116                 	8.68
+12                  	4.7                 	23                  	115                 	6
+13                  	4.9                 	24                  	112                 	6.54
+14                  	5.1                 	25                  	117                 	6.72
+15                  	5.3                 	26                  	110                 	7.93
+16                  	5.5                 	27                  	111                 	11.7
+17                  	5.7                 	28                  	113                 	7.64
+18                  	5.9                 	29                  	113                 	9.31
+19                  	6.1                 	30                  	111                 	7.52
+20                  	6.4                 	31                  	109                 	10.78
+21                  	6.6                 	32                  	107                 	10.64
+22                  	6.8                 	33                  	106                 	7.28
+23                  	7                   	34                  	107                 	11.26
+24                  	7.2                 	35                  	107                 	8.11
+25                  	7.4                 	36                  	103                 	8.35
+26                  	7.6                 	37                  	102                 	8.83
+27                  	7.9                 	38                  	101                 	9.39
+28                  	8.1                 	39                  	101                 	9.37
+29                  	8.3                 	40                  	101                 	8.37
+
+Best 10
+1                   	4.2                 	21                  	114                 	3.03
+2                   	4                   	20                  	118                 	3.74
+3                   	2.4                 	12                  	124                 	4.98
+4                   	4.7                 	23                  	115                 	6
+5                   	4.9                 	24                  	112                 	6.54
+6                   	5.1                 	25                  	117                 	6.72
+7                   	6.8                 	33                  	106                 	7.28
+8                   	6.1                 	30                  	111                 	7.52
+9                   	5.7                 	28                  	113                 	7.64
+10                  	3.4                 	17                  	115                 	7.77
+
+
+Running Optimize2
+Starting nunits=114, Err=3.2)
+Cycle 1             	Unit 5(1)           	j=8                 	n=114               	2.85
+Cycle 2             	Unit 62(1)          	j=10                	n=114               	2.66
+Cycle 3             	Unit 35(2)          	j=15                	n=114               	2.6
+No improvements in cycle 4
+Cycle 5             	Unit 63(2)          	j=12                	n=115               	2.57
+No improvements in cycle 6
+Cycle 7             	Unit 62(2)          	j=8                 	n=115               	2.48
+No improvements in cycle 8
+Optimization 2 time =  00.25 min
+
+Number of units = 115
+Percentage error = 2.48
+Median amplitude (%) = 0.748
+Half-amplitude amplitude (%) = 0.962
+No of large units making half amplitude = 0.00
+Largest unit (%) = 2.19
+Mean RS (%) = 1.99
+Size limit (uV) = 5/19.3/0.0/10.1
+Optimization method = 2 (nX=98, nY=145, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=118, Err=4.03)
+Cycle 1             	Unit 64(1)          	j=2                 	n=118               	3.49
+Cycle 2             	Unit 105(1)         	j=8                 	n=118               	3.41
+Cycle 3             	Unit 64(1)          	j=4                 	n=118               	3.22
+Cycle 4             	Unit 4(1)           	j=8                 	n=118               	3.15
+Cycle 5             	Unit 64(1)          	j=2                 	n=118               	3.07
+Cycle 6             	Unit 64(1)          	j=4                 	n=118               	3.01
+Cycle 7             	Unit 106(1)         	j=6                 	n=118               	2.91
+Cycle 8             	Unit 65(1)          	j=3                 	n=118               	2.87
+Cycle 9             	Unit 93(1)          	j=7                 	n=118               	2.81
+Cycle 10            	Unit 5(1)           	j=1                 	n=118               	2.78
+Cycle 11            	Unit 65(1)          	j=6                 	n=118               	2.37
+No improvements in cycle 12
+No improvements in cycle 13
+Cycle 14            	Unit 94(10)         	j=9                 	n=118               	2.32
+No improvements in cycle 15
+Optimization 2 time =  00.30 min
+
+Number of units = 118
+Percentage error = 2.32
+Median amplitude (%) = 0.751
+Half-amplitude amplitude (%) = 0.92
+No of large units making half amplitude = 0.00
+Largest unit (%) = 3.4
+Mean RS (%) = 2
+Size limit (uV) = 5/19.3/0.0/9.8
+Optimization method = 2 (nX=98, nY=145, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=124, Err=4.89)
+Cycle 1             	Unit 5(1)           	j=2                 	n=124               	4.34
+Cycle 2             	Unit 25(1)          	j=1                 	n=124               	4.06
+Cycle 3             	Unit 69(1)          	j=2                 	n=124               	3.92
+Cycle 4             	Unit 68(1)          	j=6                 	n=124               	3.79
+Cycle 5             	Unit 25(1)          	j=2                 	n=124               	3.66
+Cycle 6             	Unit 110(1)         	j=6                 	n=124               	3.18
+Cycle 7             	Unit 105(1)         	j=10                	n=124               	3
+Cycle 8             	Unit 45(7)          	j=7                 	n=124               	2.96
+No improvements in cycle 9
+No improvements in cycle 10
+No improvements in cycle 11
+Optimization 2 time =  00.28 min
+
+Number of units = 124
+Percentage error = 2.96
+Median amplitude (%) = 0.633
+Half-amplitude amplitude (%) = 0.924
+No of large units making half amplitude = 0.00
+Largest unit (%) = 2.9
+Mean RS (%) = 1.99
+Size limit (uV) = 5/19.3/0.0/9.3
+Optimization method = 2 (nX=98, nY=145, nXAv=4, nYAv=-2, jm=5)
+
+
+Best run was No. 2
+
+Number of units = 118
+Percentage error = 2.32
+Median amplitude (%) = 0.751
+Half-amplitude amplitude (%) = 0.92
+No of large units making half amplitude = 0.00
+Largest unit (%) = 3.4
+Mean RS (%) = 2
+Size limit (uV) = 5/19.3/0.0/9.3
+Optimization method = 2 (nX=98, nY=145, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=118, Err=2.91)
+Cycle 1             	Unit 5(1)           	j=1                 	n=118               	2.71
+Cycle 2             	Unit 67(1)          	j=17                	n=118               	2.61
+Cycle 3             	Unit 33(4)          	j=10                	n=118               	2.51
+Cycle 4             	Unit 67(1)          	j=6                 	n=118               	2.49
+Cycle 5             	Unit 66(2)          	j=4                 	n=118               	2.34
+No improvements in cycle 6
+No improvements in cycle 7
+No improvements in cycle 8
+Optimization 2 time =  00.59 min
+Best run is still 2
+
+Number of units = 118
+Percentage error = 2.32
+Median amplitude (%) = 0.751
+Half-amplitude amplitude (%) = 0.92
+No of large units making half amplitude = 0.00
+Largest unit (%) = 3.4
+Mean RS (%) = 2
+Size limit (uV) = 5/19.3/0.0/9.8
+Optimization method = 2 (nX=98, nY=145, nXAv=4, nYAv=-2, jm=5)
+
+
+Time for 4 runs = 1.43 min
+
+

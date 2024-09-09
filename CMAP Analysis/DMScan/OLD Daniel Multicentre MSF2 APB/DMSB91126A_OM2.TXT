@@ -1,0 +1,297 @@
+
+Name: MScanFitForm
+Number of points in scan = 799
+
+
+n                   	MinMicroV           	range(%)            	n points            	n units             	Error
+1                   	2.4                 	12                  	73                  	10.48
+2                   	2.6                 	13                  	69                  	11.8
+3                   	2.8                 	14                  	69                  	16.3
+4                   	3                   	15                  	74                  	13.96
+5                   	3.2                 	16                  	71                  	12.39
+6                   	3.4                 	17                  	68                  	7.06
+7                   	3.6                 	18                  	66                  	8
+8                   	3.8                 	19                  	65                  	9.93
+9                   	4                   	20                  	69                  	11.8
+10                  	4.2                 	21                  	68                  	5.44
+11                  	4.4                 	22                  	64                  	9.87
+12                  	4.7                 	23                  	62                  	14.44
+13                  	4.9                 	24                  	62                  	11.42
+14                  	5.1                 	25                  	64                  	12.44
+15                  	5.3                 	26                  	63                  	13.83
+16                  	5.5                 	27                  	62                  	12.25
+17                  	5.7                 	28                  	61                  	10.68
+18                  	5.9                 	29                  	61                  	42.26
+19                  	6.1                 	30                  	62                  	43.55
+20                  	6.3                 	31                  	61                  	10.74
+21                  	6.6                 	32                  	60                  	11.55
+22                  	6.8                 	33                  	58                  	11.48
+23                  	7                   	34                  	58                  	12.24
+24                  	7.2                 	35                  	59                  	43.31
+25                  	7.4                 	36                  	58                  	17.47
+26                  	7.6                 	37                  	58                  	11.81
+27                  	7.8                 	38                  	56                  	15.59
+28                  	8.1                 	39                  	56                  	12.89
+29                  	8.3                 	40                  	56                  	20.69
+
+Best 10
+1                   	4.2                 	21                  	68                  	5.44
+2                   	3.4                 	17                  	68                  	7.06
+3                   	3.6                 	18                  	66                  	8
+4                   	4.4                 	22                  	64                  	9.87
+5                   	3.8                 	19                  	65                  	9.93
+6                   	2.4                 	12                  	73                  	10.48
+7                   	5.7                 	28                  	61                  	10.68
+8                   	6.3                 	31                  	61                  	10.74
+9                   	4.9                 	24                  	62                  	11.42
+10                  	6.8                 	33                  	58                  	11.48
+
+n                   	MinMicroV           	range(%)            	n points            	n units             	Error
+1                   	2.4                 	12                  	73                  	11.63
+2                   	2.6                 	13                  	69                  	11.92
+3                   	2.8                 	14                  	69                  	16.59
+4                   	3                   	15                  	74                  	14.91
+5                   	3.2                 	16                  	71                  	14.34
+6                   	3.4                 	17                  	68                  	7.71
+7                   	3.6                 	18                  	66                  	8.7
+8                   	3.8                 	19                  	65                  	10.18
+9                   	4                   	20                  	69                  	12.6
+10                  	4.2                 	21                  	68                  	6.2
+11                  	4.4                 	22                  	64                  	10.29
+12                  	4.7                 	23                  	62                  	15.95
+13                  	4.9                 	24                  	62                  	12.83
+14                  	5.1                 	25                  	64                  	13.04
+15                  	5.3                 	26                  	63                  	15.07
+16                  	5.5                 	27                  	62                  	13.26
+17                  	5.7                 	28                  	61                  	11.32
+18                  	5.9                 	29                  	61                  	42.75
+19                  	6.1                 	30                  	62                  	45.61
+20                  	6.3                 	31                  	61                  	11.61
+21                  	6.6                 	32                  	60                  	12.37
+22                  	6.8                 	33                  	58                  	12.63
+23                  	7                   	34                  	58                  	13.04
+24                  	7.2                 	35                  	59                  	44.74
+25                  	7.4                 	36                  	58                  	18.13
+26                  	7.6                 	37                  	58                  	12.1
+27                  	7.8                 	38                  	56                  	16.63
+28                  	8.1                 	39                  	56                  	13.57
+29                  	8.3                 	40                  	56                  	21.58
+
+Best 10
+1                   	4.2                 	21                  	68                  	6.2
+2                   	3.4                 	17                  	68                  	7.71
+3                   	3.6                 	18                  	66                  	8.7
+4                   	3.8                 	19                  	65                  	10.18
+5                   	4.4                 	22                  	64                  	10.29
+6                   	5.7                 	28                  	61                  	11.32
+7                   	6.3                 	31                  	61                  	11.61
+8                   	2.4                 	12                  	73                  	11.63
+9                   	2.6                 	13                  	69                  	11.92
+10                  	7.6                 	37                  	58                  	12.1
+
+
+Running Optimize2
+Starting nunits=68, Err=5.65)
+Cycle 1             	Unit 68(1)          	j=3                 	n=68                	5.43
+Cycle 2             	Unit 68(1)          	j=3                 	n=68                	5.18
+Cycle 3             	Unit 68(1)          	j=6                 	n=68                	5.09
+Cycle 4             	Unit 7(1)           	j=1                 	n=68                	5.02
+Cycle 5             	Unit 7(1)           	j=2                 	n=68                	4.49
+Cycle 6             	Unit 7(1)           	j=2                 	n=68                	4.31
+Cycle 7             	Unit 1(1)           	j=2                 	n=68                	4.23
+Cycle 8             	Unit 66(1)          	j=3                 	n=68                	4.17
+Cycle 9             	Unit 68(1)          	j=12                	n=69                	4.06
+Cycle 10            	Unit 68(1)          	j=1                 	n=69                	4
+Cycle 11            	Unit 68(1)          	j=4                 	n=69                	3.84
+Cycle 12            	Unit 67(3)          	j=11                	n=68                	3.73
+Cycle 13            	Unit 66(1)          	j=13                	n=69                	3.67
+Cycle 14            	Unit 10(2)          	j=4                 	n=69                	3.62
+Cycle 15            	Unit 57(1)          	j=4                 	n=69                	3.56
+Cycle 16            	Unit 69(2)          	j=5                 	n=69                	3.44
+Cycle 17            	Unit 69(1)          	j=9                 	n=69                	3.39
+Cycle 18            	Unit 57(7)          	j=1                 	n=69                	3.34
+Cycle 19            	Unit 69(1)          	j=9                 	n=69                	3.29
+Cycle 20            	Unit 27(5)          	j=9                 	n=69                	3.24
+No improvements in cycle 21
+Cycle 22            	Unit 1(4)           	j=8                 	n=69                	3.08
+Cycle 23            	Unit 10(1)          	j=8                 	n=69                	3.02
+Cycle 24            	Unit 32(1)          	j=1                 	n=69                	2.82
+Cycle 25            	Unit 69(1)          	j=15                	n=69                	2.75
+Cycle 26            	Unit 69(1)          	j=14                	n=69                	2.69
+Cycle 27            	Unit 66(3)          	j=12                	n=70                	2.65
+No improvements in cycle 28
+Cycle 29            	Unit 15(1)          	j=7                 	n=70                	2.6
+Cycle 30            	Unit 70(1)          	j=8                 	n=70                	2.48
+No improvements in cycle 31
+Optimization 2 time =  00.30 min
+
+Number of units = 70
+Percentage error = 2.48
+Median amplitude (%) = 1.09
+Half-amplitude amplitude (%) = 1.76
+No of large units making half amplitude = 0.00
+Largest unit (%) = 7.92
+Mean RS (%) = 2.02
+Size limit (uV) = 5/24.2/0.0/20.7
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=68, Err=7.02)
+Cycle 1             	Unit 1(1)           	j=5                 	n=68                	6.46
+Cycle 2             	Unit 1(3)           	j=8                 	n=68                	5.91
+Cycle 3             	Unit 56(1)          	j=13                	n=69                	5.78
+Cycle 4             	Unit 68(1)          	j=11                	n=68                	5.19
+Cycle 5             	Unit 68(1)          	j=13                	n=69                	5.07
+Cycle 6             	Unit 56(1)          	j=3                 	n=69                	4.81
+Cycle 7             	Unit 6(1)           	j=5                 	n=69                	4.59
+Cycle 8             	Unit 1(1)           	j=2                 	n=69                	4.52
+Cycle 9             	Unit 69(2)          	j=6                 	n=69                	4.46
+Cycle 10            	Unit 69(2)          	j=6                 	n=69                	4.3
+Cycle 11            	Unit 68(1)          	j=4                 	n=69                	4.25
+Cycle 12            	Unit 6(1)           	j=11                	n=68                	3.95
+Cycle 13            	Unit 13(3)          	j=14                	n=68                	3.91
+Cycle 14            	Unit 6(1)           	j=9                 	n=68                	3.78
+No improvements in cycle 15
+Cycle 16            	Unit 68(3)          	j=5                 	n=68                	3.72
+Cycle 17            	Unit 3(5)           	j=8                 	n=68                	3.58
+Cycle 18            	Unit 6(1)           	j=1                 	n=68                	3.52
+No improvements in cycle 19
+Cycle 20            	Unit 14(6)          	j=16                	n=68                	3.43
+Cycle 21            	Unit 6(1)           	j=5                 	n=68                	3.33
+Cycle 22            	Unit 15(4)          	j=14                	n=68                	3.26
+Cycle 23            	Unit 12(7)          	j=7                 	n=68                	3.16
+No improvements in cycle 24
+Optimization 2 time =  00.33 min
+
+Number of units = 68
+Percentage error = 3.16
+Median amplitude (%) = 1.13
+Half-amplitude amplitude (%) = 1.94
+No of large units making half amplitude = 0.00
+Largest unit (%) = 7.76
+Mean RS (%) = 2.01
+Size limit (uV) = 5/24.2/0.0/21.3
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=66, Err=8.41)
+Cycle 1             	Unit 64(1)          	j=1                 	n=66                	7.84
+Cycle 2             	Unit 64(1)          	j=5                 	n=66                	7.32
+Cycle 3             	Unit 64(1)          	j=5                 	n=66                	7.16
+Cycle 4             	Unit 65(1)          	j=4                 	n=66                	6.9
+Cycle 5             	Unit 1(1)           	j=2                 	n=66                	6.79
+Cycle 6             	Unit 64(1)          	j=1                 	n=66                	6.38
+Cycle 7             	Unit 1(1)           	j=2                 	n=66                	6.1
+Cycle 8             	Unit 1(1)           	j=8                 	n=66                	5.34
+Cycle 9             	Unit 65(1)          	j=2                 	n=66                	5.02
+Cycle 10            	Unit 64(3)          	j=1                 	n=66                	4.87
+Cycle 11            	Unit 66(1)          	j=3                 	n=66                	4.67
+Cycle 12            	Unit 14(1)          	j=2                 	n=66                	4.53
+Cycle 13            	Unit 7(4)           	j=5                 	n=66                	4.39
+Cycle 14            	Unit 14(2)          	j=6                 	n=66                	4.28
+Cycle 15            	Unit 7(2)           	j=3                 	n=66                	4.15
+Cycle 16            	Unit 15(2)          	j=16                	n=66                	4.04
+Cycle 17            	Unit 62(7)          	j=7                 	n=66                	3.99
+Cycle 18            	Unit 63(7)          	j=12                	n=67                	3.95
+Cycle 19            	Unit 26(6)          	j=2                 	n=67                	3.9
+Cycle 20            	Unit 31(6)          	j=1                 	n=67                	3.86
+No improvements in cycle 21
+No improvements in cycle 22
+No improvements in cycle 23
+Optimization 2 time =  00.33 min
+
+Number of units = 67
+Percentage error = 3.86
+Median amplitude (%) = 1.19
+Half-amplitude amplitude (%) = 1.74
+No of large units making half amplitude = 0.00
+Largest unit (%) = 7.24
+Mean RS (%) = 2
+Size limit (uV) = 5/24.2/0.0/21.7
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=65, Err=10.18)
+Cycle 1             	Unit 64(1)          	j=4                 	n=65                	9.53
+Cycle 2             	Unit 64(1)          	j=4                 	n=65                	8.97
+Cycle 3             	Unit 64(1)          	j=5                 	n=65                	8.28
+Cycle 4             	Unit 64(1)          	j=1                 	n=65                	7.6
+Cycle 5             	Unit 64(1)          	j=1                 	n=65                	7.39
+Cycle 6             	Unit 64(1)          	j=1                 	n=65                	6.77
+Cycle 7             	Unit 64(1)          	j=4                 	n=65                	6.52
+Cycle 8             	Unit 1(1)           	j=2                 	n=65                	6.3
+Cycle 9             	Unit 64(1)          	j=1                 	n=65                	6.02
+Cycle 10            	Unit 1(1)           	j=1                 	n=65                	5.94
+Cycle 11            	Unit 64(1)          	j=1                 	n=65                	5.86
+Cycle 12            	Unit 1(1)           	j=5                 	n=65                	5.65
+Cycle 13            	Unit 64(1)          	j=4                 	n=65                	5.58
+Cycle 14            	Unit 14(1)          	j=1                 	n=65                	5.45
+Cycle 15            	Unit 1(1)           	j=8                 	n=65                	4.46
+Cycle 16            	Unit 62(1)          	j=4                 	n=65                	4.41
+Cycle 17            	Unit 62(2)          	j=15                	n=65                	4.34
+Cycle 18            	Unit 65(1)          	j=13                	n=66                	4.25
+Cycle 19            	Unit 25(3)          	j=12                	n=67                	4.15
+Cycle 20            	Unit 63(1)          	j=10                	n=67                	4.05
+Cycle 21            	Unit 6(5)           	j=15                	n=67                	4
+No improvements in cycle 22
+Cycle 23            	Unit 66(10)         	j=5                 	n=67                	3.78
+Cycle 24            	Unit 24(1)          	j=3                 	n=67                	3.45
+Cycle 25            	Unit 14(1)          	j=15                	n=67                	3.39
+No improvements in cycle 26
+No improvements in cycle 27
+Optimization 2 time =  00.29 min
+
+Number of units = 67
+Percentage error = 3.39
+Median amplitude (%) = 1.27
+Half-amplitude amplitude (%) = 1.66
+No of large units making half amplitude = 0.00
+Largest unit (%) = 6.91
+Mean RS (%) = 1.99
+Size limit (uV) = 5/24.2/0.0/21.7
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Best run was No. 1
+
+Number of units = 70
+Percentage error = 2.48
+Median amplitude (%) = 1.09
+Half-amplitude amplitude (%) = 1.76
+No of large units making half amplitude = 0.00
+Largest unit (%) = 7.92
+Mean RS (%) = 2.02
+Size limit (uV) = 5/24.2/0.0/21.7
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Running Optimize2
+Starting nunits=70, Err=3.31)
+Cycle 1             	Unit 35(1)          	j=6                 	n=70                	3.24
+Cycle 2             	Unit 36(1)          	j=11                	n=69                	2.68
+Cycle 3             	Unit 36(4)          	j=2                 	n=69                	2.64
+No improvements in cycle 4
+No improvements in cycle 5
+Cycle 6             	Unit 36(14)         	j=12                	n=70                	2.56
+Cycle 7             	Unit 34(1)          	j=1                 	n=70                	2.52
+No improvements in cycle 8
+Optimization 2 time =  00.49 min
+Best run is still 1
+
+Number of units = 70
+Percentage error = 2.48
+Median amplitude (%) = 1.09
+Half-amplitude amplitude (%) = 1.76
+No of large units making half amplitude = 0.00
+Largest unit (%) = 7.92
+Mean RS (%) = 2.02
+Size limit (uV) = 5/24.2/0.0/20.7
+Optimization method = 2 (nX=120, nY=181, nXAv=4, nYAv=-2, jm=5)
+
+
+Time for 5 runs = 1.76 min
+
+
