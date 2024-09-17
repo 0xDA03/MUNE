@@ -8,7 +8,7 @@ from scipy.stats import expon
 
 class CMAPSim:
 
-    def __init__(self, NCells, alpha1=200, beta1=25, alpha2=12, beta2=1, alpha3=0, beta3=0.02, length=500, noiseoffset=10, noisedev=5, seed=0):
+    def __init__(self, NCells, alpha1=200, beta1=25, alpha2=12, beta2=1, alpha3=0, beta3=0.02, length=500, noiseoffset=10, noisedev=5, method="Stairfit", seed=0):
         """Initialize the simulator with given parameters."""
         self.rng = np.random.default_rng(seed=seed)
         self.NCells = NCells            # Number of Motor Units
@@ -21,6 +21,7 @@ class CMAPSim:
         self.length = length            # Lenght of simulation
         self.noiseoffset = noiseoffset  # Additive noise mean
         self.noisedev = noisedev        # Additive noise deviation
+        self.method = method            # FOR NOW JUST CHANGES _____
         self.x, self.y = self._simulate_amplitudes()
 
     def _simulate_amplitudes(self):
@@ -41,6 +42,7 @@ class CMAPSim:
     def _calculate_probabilities(self, Thresholds, Devs, stim):
         """Calculate the sigmoid response probabilities for each unit."""
         return (erf((1/(np.sqrt(2)*Devs))*(stim-Thresholds))+1)/2
+        
 
     def _calculate_amplitude(self, Sizes, Thresholds, Devs, stim):
         """Determine activation of each unit based on its probability for a given stimulus."""
@@ -51,18 +53,19 @@ class CMAPSim:
         return np.sum(Amps)
     
 
-# Cells = 40
-# alpha1 = 0.2
-# beta1 = 0.025
-# alpha2 = 12
-# beta2 = 1
-# alpha3 = 0.015
-# beta3 = 0.02
-# length = 500
-# noiseoffset = 0.01
-# noisedev = 0.005
 
-# # Execute simulation
+# Cells = 80      # Number of Motor Units
+# alpha1 = 0.08    # Exponential Scale parameter (Mean motor unit amplitude (+ minumum))
+# beta1 = 0.025   # Exponential Location parameter (Minimnum motor unit amplitude)
+# alpha2 = 26.5     # Activation threshold mean
+# beta2 = 2       # Activation threshold deviation (gaussian)
+# alpha3 = 0.015  # Relative spread lower bound (uniform dist)
+# beta3 = 0.018    # Relative spread upper bound (uniform dist)
+# length = 400    # Length of simulation (nsamples)
+# noiseoffset = 0.01  # Additive noise mean
+# noisedev = 0.005    # Additive noise deviation
+
+# # # Execute simulation
 # Simulator = CMAPSim(Cells, alpha1, beta1, alpha2, beta2, alpha3, beta3, length, noiseoffset, noisedev)
 
 # import plotly.graph_objects as go
