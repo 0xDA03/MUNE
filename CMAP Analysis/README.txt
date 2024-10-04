@@ -52,4 +52,4 @@ scikit-learn
 plotly
 nbformat
 
-Bostock.py requires kaleido for image writing
+Dawood.py requires kaleido for image writing
