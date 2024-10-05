@@ -8,7 +8,7 @@
 import numpy as np
 from scipy.stats import expon
 from scipy.special import erf
-from Export import generateDAT, generateTXT, generatePlot, generateMEM, generateMEF
+from Export import generateDAT, generateTXT, generatePlot, generateMEM, generateMEF, generateTrajectory
 
 
 def main():
@@ -36,16 +36,17 @@ def main():
                 for i in range(len(SEEDS)):
                     rng = np.random.default_rng(seed=SEEDS[i])                                          # set the seed of the rng for reproducability
                     mu_sizes = expon.rvs(scale=0.0625-0.025, loc=0.025, size=160, random_state=rng)     # intialize the healthy model with 160 units and a given mean amplitude
-                    mu_sizes = np.sort(mu_sizes)                                                        # sort the mtor units by size
+                    mu_sizes = np.sort(mu_sizes)
+                    mu_counts = []                                                        # sort the mtor units by size
                     max_CMAPs = []
 
                     while len(mu_sizes) >= 5:
                         mu_count = len(mu_sizes)        # motor unit count
+                        mu_counts.append(mu_count)
                         mu_mean = np.mean(mu_sizes)     # mean single unit amplitude
 
-                        stimuli, responses = scan(mu_sizes, mu_count, rng)                          # generate the (stimulus,response) data for the scan
+                        stimuli, responses = scan(mu_sizes, rng)                          # generate the (stimulus,response) data for the scan
                         max_CMAPs.append(max(responses))
-
                         generatePlot(f"{gen_path}/mu-{mu_count}", mu_mean, stimuli, responses)      # plot and save the (stimulus,response) data from the scan in /PLOTS
                         # generateDAT(gen_path, f"{mu_count}-{mu_mean}", stimuli, responses)          # export scan data to MScanFit-compatible .DAT file in /DAT
                         generateMEM(gen_path, f"{mu_count}-{mu_mean}", stimuli, responses)          # export scan data to MScanFit-compatible .MEM file in /MEM
@@ -54,6 +55,8 @@ def main():
                         
                         mu_sizes = degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, DE_STRENGTH, rng)      # handle degeneration and reinnervation of motor units
                     
+                    generateTrajectory(f"{gen_path}/mu-{mu_count}", mu_mean, mu_counts, max_CMAPs)
+
                     re_str = re_strength*100 if re_method != "none" else "0.0"                                   
                     print_progress(i+1, len(SEEDS), f"Running '{de_method}' deinnervation and {re_str}% '{re_method}' reinnervation", '', 0, 50)     # display progress bar
                 
@@ -98,7 +101,7 @@ def degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, de_strengt
     return mu_sizes
 
 
-def scan(mu_sizes, mu_count, rng):
+def scan(mu_sizes, rng):
     # Generate stimulus,response data given MU sizes
     
     THRESHOLD_MEAN = 26.5           # Activation threshold mean

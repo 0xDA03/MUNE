@@ -54,8 +54,8 @@ class CMAPSim:
     
 
 
-# Cells = 80      # Number of Motor Units
-# alpha1 = 0.08    # Exponential Scale parameter (Mean motor unit amplitude (+ minumum))
+# Cells = 160      # Number of Motor Units
+# alpha1 = 0.0375    # Exponential Scale parameter (Mean motor unit amplitude (+ minumum))
 # beta1 = 0.025   # Exponential Location parameter (Minimnum motor unit amplitude)
 # alpha2 = 26.5     # Activation threshold mean
 # beta2 = 2       # Activation threshold deviation (gaussian)
@@ -65,7 +65,7 @@ class CMAPSim:
 # noiseoffset = 0.01  # Additive noise mean
 # noisedev = 0.005    # Additive noise deviation
 
-# # # Execute simulation
+# # # # Execute simulation
 # Simulator = CMAPSim(Cells, alpha1, beta1, alpha2, beta2, alpha3, beta3, length, noiseoffset, noisedev)
 
 # import plotly.graph_objects as go
