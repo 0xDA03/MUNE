@@ -7,6 +7,12 @@ import plotly.graph_objects as graph
 from io import BytesIO
 from PIL import Image, ImageTk
 
+# Globals relating to the MUNE
+SMUP_MIN = 0.025                # minimnum motor unit amplitude
+RELATIVE_SPREAD = 0.0165        # relative spread, there is no upper or lower bound in this model
+SAMPLES = 450                   # length of simulation
+NOISE = 0.01                    # additive noise deviation, there is no offset in this model
+
 # Global dictionary to store all plot images by re_strength
 plot_images_dict = {}
 current_image_idx = 0
@@ -14,13 +20,12 @@ current_re_strength = None
 
 def main():
     global mu_count_0, mu_count, resiliences, rng
-    THRESHOLD_MIN = 0.025
     seed = np.random.randint(1000000)
 
     for re_strength in resiliences:
         re_strength /= 100
         rng = np.random.default_rng(seed=seed)
-        mu_sizes = expon.rvs(scale=smup_mean - THRESHOLD_MIN, loc=THRESHOLD_MIN, size=mu_count_0, random_state=rng)
+        mu_sizes = expon.rvs(scale=smup_mean - SMUP_MIN, loc=SMUP_MIN, size=mu_count_0, random_state=rng)
         plot_images_dict[re_strength] = []  # Initialize list for each re_strength
         mu_sizes = np.sort(mu_sizes)
         while len(mu_sizes) >= 5:
@@ -29,18 +34,15 @@ def main():
             stimuli, responses = scan(mu_sizes)
             store_plot(stimuli, responses, re_strength)  # Store each plot for the current re_strength
 
+            rng = np.random.default_rng(np.random.randint(1000000))
             mu_sizes = degenerate(mu_sizes, mu_count, re_strength)  # Handle degeneration
 
 def scan(mu_sizes):
     global mu_count, smup_mean, threshold_mean, threshold_dev, rng
 
-    THRESHOLD_SPREAD = 0.0165
-    SAMPLES = 450
-    NOISE = 0.01
-
     mu_count = len(mu_sizes)
     mu_thresholds = rng.normal(threshold_mean, threshold_dev, mu_count)
-    mu_devs = mu_thresholds * THRESHOLD_SPREAD
+    mu_devs = mu_thresholds * RELATIVE_SPREAD
     stimuli = np.linspace(min(mu_thresholds) - 0.5, max(mu_thresholds) + 0.5, SAMPLES)
     noise = rng.normal(0, NOISE, SAMPLES)
 
@@ -152,7 +154,7 @@ frame.grid_columnconfigure(1, weight=1)
 
 # Define labels and entry fields for each variable
 labels = ["Motor Unit Count:",
-          "Mean Motor Unit Amplitude (mV, ie: 62.5):",
+          f"Mean Motor Unit Amplitude (\u03BCVV, ie: 62.5):",
           "Activation Threshold Mean (mA, ie: 26.5):",
           "Activation Threshold Deviation (mA, ie: 2):",
           "Resiliences (%, ie: 100, 60, 20)"]

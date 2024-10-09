@@ -14,16 +14,16 @@ from Export import generateDAT, generateTXT, generatePlot, generateMEM, generate
 def main():
     SEEDS = list(range(1,11))                   # seeds for pseudo-random reproducability
     DE_METHODS = [                              # motor neuron degeneration methods characterized by:
-                    # "random",                   # random degeneration
+                    "random",                   # random degeneration
                     "selective"                 # large-biased degeneration (selective vulnerability)
                 ]
     RE_METHODS = [                              # collateral reinnervation methods characterized by:
-                    # "random",                   # compensation via random motor units
-                    # "selective",                # compensation via selective (large-biased) motor units
-                    # "none",                     # no compensation
-                    "distributed"
+                    "random",                   # compensation via random motor units
+                    "selective",                # compensation via selective (large-biased) motor units
+                    "distributed",               # compensation via distributed (evenly amongst all remaining) motor units
+                    "none",                     # no compensation
                 ]
-    RE_STRENGTHS = [0.6]                # strength of reinnervation represents the fraction of degenerated nerves that are to be compensated for
+    RE_STRENGTHS = [0.6, 0.2]                # strength of reinnervation represents the fraction of degenerated nerves that are to be compensated for
     DE_STRENGTH = 0.5
 
     for de_method in DE_METHODS:
@@ -66,6 +66,32 @@ def main():
                     break   # break unnecessary loop of varying reinnervation strengths when there is no compensation 
 
 
+def scan(mu_sizes, rng):
+    # Generate stimulus,response data given MU sizes
+    
+    THRESHOLD_MEAN = 26.5           # Activation threshold mean
+    THRESHOLD_DEV = 2               # Activation threshold deviation (gaussian)
+    THRESHOLD_SPREAD = 0.0165       # Relative spread
+    SAMPLES = 450                   # Length of simulation (nsamples)
+    NOISE = 0.01                    # Additive noise deviation
+
+    mu_count = len(mu_sizes)                                                # get the number of motor units
+    mu_thresholds = rng.normal(THRESHOLD_MEAN, THRESHOLD_DEV, mu_count)     # produce a normal distribution of motor unit thresholds
+    mu_devs = mu_thresholds * THRESHOLD_SPREAD                              # calculate deviations for each motor unit threshold
+    stimuli = np.linspace(20, 33, SAMPLES)                                  # produce a linear sequence of stimulus amplitudes
+    noise = rng.normal(0, NOISE, SAMPLES)                                   # generate random noise variabilities
+    
+    responses = []
+    for stimulus in stimuli:
+        probabilities = (erf((1/(np.sqrt(2)*mu_devs))*(stimulus-mu_thresholds))+1)/2        # calculate the firing probability for each motor unit with respect to a stimulus
+        activations = rng.uniform(0, 1, mu_count) <= probabilities                          # determine the binary firing of each motor unit
+        cmap = np.sum(mu_sizes * (activations.astype(int)))                                 # calculate the CMAP response of all motor units that fired                                                  
+        responses.append(cmap)
+    responses = np.array(responses) + noise                                                 # incorporate random noise variation to the CMAPs
+
+    return stimuli, responses
+
+
 def degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, de_strength, rng):
     # Handle the degeneration and reinnervation of motor units
 
@@ -99,32 +125,6 @@ def degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, de_strengt
             mu_sizes[i] += re_amplitude
 
     return mu_sizes
-
-
-def scan(mu_sizes, rng):
-    # Generate stimulus,response data given MU sizes
-    
-    THRESHOLD_MEAN = 26.5           # Activation threshold mean
-    THRESHOLD_DEV = 2               # Activation threshold deviation (gaussian)
-    THRESHOLD_SPREAD = 0.0165       # Relative spread
-    SAMPLES = 450                   # Length of simulation (nsamples)
-    NOISE = 0.01                    # Additive noise deviation
-
-    mu_count = len(mu_sizes)                                                # get the number of motor units
-    mu_thresholds = rng.normal(THRESHOLD_MEAN, THRESHOLD_DEV, mu_count)     # produce a normal distribution of motor unit thresholds
-    mu_devs = mu_thresholds * THRESHOLD_SPREAD                              # calculate deviations for each motor unit threshold
-    stimuli = np.linspace(20, 33, SAMPLES)                                  # produce a linear sequence of stimulus amplitudes
-    noise = rng.normal(0, NOISE, SAMPLES)                                   # generate random noise variabilities
-    
-    responses = []
-    for stimulus in stimuli:
-        probabilities =  (erf((1/(np.sqrt(2)*mu_devs))*(stimulus-mu_thresholds))+1)/2       # calculate the firing probability for each motor unit with respect to a stimulus
-        activations = rng.uniform(0, 1, mu_count) <= probabilities                          # determine the binary firing of each motor unit
-        cmap = np.sum(mu_sizes * (activations.astype(int)))                                 # calculate the CMAP response of all motor units that fired                                                  
-        responses.append(cmap)
-    responses = np.array(responses) + noise                                                 # incorporate random noise variation to the CMAPs
-
-    return stimuli, responses
 
 
 def print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):

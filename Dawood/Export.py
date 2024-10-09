@@ -59,8 +59,8 @@ def generatePlot(path, filename, stimuli, responses):
 
 def generateTrajectory(path, filename, mu_counts, max_CMAPs):
     fig = graph.Figure()
-    fig.add_trace(graph.Scatter(x=mu_counts, y=max_CMAPs, mode="markers"))
+    fig.add_trace(graph.Scatter(x=mu_counts, y=max_CMAPs, mode="lines+markers"))
 
     directory = f"TRAJECTORIES/{path}"
     os.makedirs(directory, exist_ok=True)
-    fig.write_image(f"{directory}/{filename}.png")      # save the plot to the specified path
+    fig.write_image(f"{directory}/{filename}.png")
