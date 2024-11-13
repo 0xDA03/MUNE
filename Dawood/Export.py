@@ -1,5 +1,6 @@
 import os
 import plotly.graph_objects as graph
+import plotly.express as px
 
 
 def generateDAT(path, filename, stimuli, responses):
@@ -50,7 +51,25 @@ def generateTXT(path, filename, data):
 
 def generatePlot(path, filename, stimuli, responses):
     fig = graph.Figure()
-    fig.add_trace(graph.Scatter(x=stimuli, y=responses, mode="markers"))
+    fig.add_trace(graph.Scatter(x=stimuli, y=responses, mode="markers", marker=dict(color="black", size=4)))
+    fig.update_layout(
+        template="plotly_white",          # Base template for minimal styling
+        plot_bgcolor="rgba(0,0,0,0)",     # Transparent plot background
+        xaxis=dict(
+            title="Stimulus Intensity (mA)",
+            color="black",                # Black x-axis line and labels
+            showgrid=False,                # Show only main gridline for x-axis
+            zeroline=True,                # Show main gridline at zero
+            zerolinecolor="black"         # Make zero line black
+        ),
+        yaxis=dict(
+            title="CMAP Amplitude (mV)",
+            color="black",                # Black y-axis line and labels
+            showgrid=False,                # Show only main gridline for y-axis
+            zeroline=True,                # Show main gridline at zero
+            zerolinecolor="black"         # Make zero line black
+        )
+    )
 
     directory = f"PLOTS/{path}"
     os.makedirs(directory, exist_ok=True)
@@ -59,8 +78,27 @@ def generatePlot(path, filename, stimuli, responses):
 
 def generateTrajectory(path, filename, mu_counts, max_CMAPs):
     fig = graph.Figure()
-    fig.add_trace(graph.Scatter(x=mu_counts, y=max_CMAPs, mode="lines+markers"))
+    fig.add_trace(graph.Scatter(x=mu_counts,
+                                y=max_CMAPs,
+                                mode="lines+markers+text",
+                                text=[f"{y:.2f}" for y in max_CMAPs],
+                                textposition="top center"))
+    fig.update_layout(yaxis_range=[0, 12])
 
     directory = f"TRAJECTORIES/{path}"
+    os.makedirs(directory, exist_ok=True)
+    fig.write_image(f"{directory}/{filename}.png")
+
+
+def generateDist(path, filename, data):
+    fig = px.histogram(x=data, nbins=15)
+    # fig.update_traces(xbins=dict(
+    #     start=0,  # Start of the bins
+    #     end=0.5,   # End of the bins
+    #     size=0.02  # Size of each bin
+    # ))
+    # fig.update_layout(xaxis=dict(range=[0, 0.6]))
+
+    directory = f"DISTS/{path}"
     os.makedirs(directory, exist_ok=True)
     fig.write_image(f"{directory}/{filename}.png")

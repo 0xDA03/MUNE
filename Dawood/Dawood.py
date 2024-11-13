@@ -8,7 +8,7 @@
 import numpy as np
 from scipy.stats import expon
 from scipy.special import erf
-from Export import generateDAT, generateTXT, generatePlot, generateMEM, generateMEF, generateTrajectory
+from Export import generateDAT, generateTXT, generatePlot, generateMEM, generateMEF, generateTrajectory, generateDist
 
 
 def main():
@@ -20,7 +20,8 @@ def main():
     RE_METHODS = [                              # collateral reinnervation methods characterized by:
                     "random",                   # compensation via random motor units
                     "selective",                # compensation via selective (large-biased) motor units
-                    "distributed",               # compensation via distributed (evenly amongst all remaining) motor units
+                    "selective2",
+                    "distributed",              # compensation via distributed (evenly amongst all remaining) motor units
                     "none",                     # no compensation
                 ]
     RE_STRENGTHS = [0.6, 0.2]                # strength of reinnervation represents the fraction of degenerated nerves that are to be compensated for
@@ -44,23 +45,26 @@ def main():
                         mu_count = len(mu_sizes)        # motor unit count
                         mu_counts.append(mu_count)
                         mu_mean = np.mean(mu_sizes)     # mean single unit amplitude
+                        mu_percents = (mu_sizes / np.max(mu_sizes)) * 100
 
                         stimuli, responses = scan(mu_sizes, rng)                          # generate the (stimulus,response) data for the scan
+                        # print(mu_count, max(responses))
                         max_CMAPs.append(max(responses))
-                        generatePlot(f"{gen_path}/mu-{mu_count}", mu_mean, stimuli, responses)      # plot and save the (stimulus,response) data from the scan in /PLOTS
+                        generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)      # plot and save the (stimulus,response) data from the scan in /PLOTS
                         # generateDAT(gen_path, f"{mu_count}-{mu_mean}", stimuli, responses)          # export scan data to MScanFit-compatible .DAT file in /DAT
-                        generateMEM(gen_path, f"{mu_count}-{mu_mean}", stimuli, responses)          # export scan data to MScanFit-compatible .MEM file in /MEM
-                        generateTXT(f"{gen_path}/mu-{mu_count}", mu_mean, mu_sizes)                 # export motor unit size raw data to .txt file in /RAW
-                        mef_paths.append(f"{mu_count}-{mu_mean}")                                   # keep track of the MEM filenames for the MEF index
+                        # generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)          # export scan data to MScanFit-compatible .MEM file in /MEM
+                        # generateTXT(f"{gen_path}/mu-{mu_count}", mu_mean, mu_sizes)                 # export motor unit size raw data to .txt file in /RAW
+                        # generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)
+                        mef_paths.append(f"{mu_count}-{i+1}")                                   # keep track of the MEM filenames for the MEF index
                         
                         mu_sizes = degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, DE_STRENGTH, rng)      # handle degeneration and reinnervation of motor units
                     
-                    generateTrajectory(f"{gen_path}/mu-{mu_count}", mu_mean, mu_counts, max_CMAPs)
+                    generateTrajectory(f"{gen_path}/mu-{mu_count}", i+1, mu_counts, max_CMAPs)
 
                     re_str = re_strength*100 if re_method != "none" else "0.0"                                   
-                    print_progress(i+1, len(SEEDS), f"Running '{de_method}' deinnervation and {re_str}% '{re_method}' reinnervation", '', 0, 50)     # display progress bar
+                    print_progress(i+1, len(SEEDS), f"Running '{de_method}' denervation and {re_str}% '{re_method}' reinnervation", '', 0, 50)     # display progress bar
                 
-                generateMEF(gen_path, mef_paths)
+                # generateMEF(gen_path, mef_paths)
 
                 if re_method == "none":
                     break   # break unnecessary loop of varying reinnervation strengths when there is no compensation 
@@ -72,13 +76,13 @@ def scan(mu_sizes, rng):
     THRESHOLD_MEAN = 26.5           # Activation threshold mean
     THRESHOLD_DEV = 2               # Activation threshold deviation (gaussian)
     THRESHOLD_SPREAD = 0.0165       # Relative spread
-    SAMPLES = 450                   # Length of simulation (nsamples)
+    SAMPLES = 500                   # Length of simulation (nsamples)
     NOISE = 0.01                    # Additive noise deviation
 
     mu_count = len(mu_sizes)                                                # get the number of motor units
     mu_thresholds = rng.normal(THRESHOLD_MEAN, THRESHOLD_DEV, mu_count)     # produce a normal distribution of motor unit thresholds
     mu_devs = mu_thresholds * THRESHOLD_SPREAD                              # calculate deviations for each motor unit threshold
-    stimuli = np.linspace(20, 33, SAMPLES)                                  # produce a linear sequence of stimulus amplitudes
+    stimuli = np.linspace(np.min(mu_thresholds)-0.5,np.max(mu_thresholds+0.5), SAMPLES)                                  # produce a linear sequence of stimulus amplitudes
     noise = rng.normal(0, NOISE, SAMPLES)                                   # generate random noise variabilities
     
     responses = []
@@ -111,12 +115,23 @@ def degenerate(mu_sizes, mu_count, de_method, re_method, re_strength, de_strengt
             mu_sizes[re_indices[i]] += re_sizes[i]                                                                  # compensate remaining motor units
 
     elif re_method == "selective":
-        re_sizes = rng.choice(de_sizes, size=int(mu_count*re_strength*de_strength), replace=False)      # randomly select X% of the degenerated units to reinnervate
-        re_sizes = np.sort(re_sizes)                                                            # sort the motor units to be reinnervated by size
-        mu_sizes = np.sort(mu_sizes)                                                            # sort the remaining motor units by size
-        for i in range(len(re_sizes)):
-            i = -(i+1)
-            mu_sizes[i] += re_sizes[i]                                                          # compensate the largest remaining motor units by the largest amount
+        de_sum = np.sum(de_sizes)
+        mu_sum = np.sum(mu_sizes)
+        for i in range(len(mu_sizes)):
+            mu_sizes[i] += (mu_sizes[i] / mu_sum * de_sum * re_strength)
+
+    elif re_method == "selective2":
+        de_sum = np.sum(de_sizes)
+        mu_squares = np.square(mu_sizes)
+        mu_square_sum = np.sum(mu_squares)
+        for i in range(len(mu_sizes)):
+            mu_sizes[i] += (mu_squares[i] / mu_square_sum * de_sum * re_strength)
+        # re_sizes = rng.choice(de_sizes, size=int(mu_count*re_strength*de_strength), replace=False)      # randomly select X% of the degenerated units to reinnervate
+        # re_sizes = np.sort(re_sizes)                                                            # sort the motor units to be reinnervated by size
+        # mu_sizes = np.sort(mu_sizes)                                                            # sort the remaining motor units by size
+        # for i in range(len(re_sizes)):
+        #     i = -(i+1)
+        #     mu_sizes[i] += re_sizes[i]                                                          # compensate the largest remaining motor units by the largest amount
 
     elif re_method == "distributed":
         de_sum = np.sum(de_sizes)
