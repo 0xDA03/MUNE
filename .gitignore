@@ -1,12 +1,8 @@
 .DS_Store
 
-/__pychache__/
-
-Dawood/PLOTS
-Dawood/DAT
-Dawood/RAW
-Dawood/MEM
-Dawood/TRAJECTORIES
-
+*/__pycache__
+Dawood/*/
+Dawood/Dawoodcopy.py
+Testing
 papers
 notes
