@@ -1,9 +1,20 @@
 import os
 import plotly.graph_objects as graph
 
-DE_CONDITIONS = ["random", "selective"]
-RE_CONDITIONS = ["random", "selective", "selective2", "distributed", "none"]    # none must be last
-STR_CONDITIONS = ["0.2", "0.6"]
+DE_CONDITIONS = [
+                    "random",
+                    #"selective"
+                ]
+RE_CONDITIONS = [
+                    "random",
+                    #"selective",
+                    #"distributive",
+                    #"none"
+                ] # none must be last
+STR_CONDITIONS = [
+                    "0.2",
+                    #"0.6"
+                ]
 PATHS = []
 for de_condition in DE_CONDITIONS:
     for re_condition in RE_CONDITIONS:

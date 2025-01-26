@@ -16,7 +16,7 @@ DE_METHODS = [                      # motor neuron degeneration methods characte
             ]
 RE_METHODS = [                      # collateral reinnervation methods characterized by:
                 "random",           #   compensation via random motor units
-                "distributed",      #   compensation via distributed (evenly amongst all remaining) motor units
+                "distributive",     #   compensation via distributive (evenly amongst all remaining) motor units
                 "selective",        #   compensation via selective (large-biased) motor units
                 "none",             #   no compensation
             ]
@@ -54,15 +54,14 @@ def main():
                         mu_sizes, mu_thresholds, mu_devs = [np.array(x) for x in zip(*mu_dict)]     # unzip motor unit properties for easier scanning
                         mu_count = len(mu_dict)
                         mu_counts.append(mu_count)
-                        smup_mean = np.mean(mu_sizes)
 
-                        stimuli, responses = scan(mu_sizes, mu_thresholds, mu_devs, rng)        # generate the (stimulus,response) data for the scan
-                        generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)     # plot and save the (stimulus,response) data from the scan in /PLOTS
-                        generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)          # export scan data to MScanFit-compatible .MEM file in /MEM
-                        generateTXT(f"{gen_path}/mu-{mu_count}", smup_mean, mu_sizes)           # export motor unit size ground truths to .txt file in /RAW
-                        generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                # plot frequency distribution for the SMUPs
-                        mef_paths.append(f"{mu_count}-{i+1}")                                   # keep track of the MEM filenames for the MEF index
-                        max_cmaps.append(max(responses))                                        # store the maximal CMAP response for the trajectories
+                        stimuli, responses = scan(mu_sizes, mu_thresholds, mu_devs, rng)            # generate the (stimulus,response) data for the scan
+                        generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)         # plot and save the (stimulus,response) data from the scan in /PLOTS
+                        generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)              # export scan data to MScanFit-compatible .MEM file in /MEM
+                        generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                     # export motor unit size ground truths to .txt file in /RAW
+                        generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                    # plot frequency distribution for the SMUPs
+                        mef_paths.append(f"{mu_count}-{i+1}")                                       # keep track of the MEM filenames for the MEF index
+                        max_cmaps.append(max(responses))                                            # store the maximal CMAP response for the trajectories
 
                         mu_dict = degenerate(mu_dict, de_method, re_method, resilience, VULNERABILITY, rng)     # handle degeneration and reinnervation of motor units
                         
@@ -79,7 +78,8 @@ def main():
 
 def scan(mu_sizes, mu_thresholds, mu_devs, rng):
     """ Generate stimulus,response CMAP data given a motor pool """
-    stimuli = np.linspace(min(mu_thresholds)-0.5, max(mu_thresholds)+0.5, SAMPLES)      # produce a linear sequence of stimulus amplitudes
+
+    stimuli = np.geomspace(min(mu_thresholds)-0.5, max(mu_thresholds)+0.5, SAMPLES)     # produce a geometric sequence of stimulus amplitudes
     noise = rng.normal(0, NOISE, SAMPLES)                                               # generate random noise variabilities
     
     responses = []
@@ -92,38 +92,37 @@ def scan(mu_sizes, mu_thresholds, mu_devs, rng):
     return stimuli, responses
 
 
-def degenerate(mu_dict, de_method, re_method, re_strength, de_strength, rng):
+def degenerate(mu_dict, de_method, re_method, resilience, vulnerability, rng):
     """ Handle the degeneration and reinnervation of motor units """
 
     if de_method == "random":
-        de_dict = [tuple(x) for x in rng.choice(mu_dict, size=int(len(mu_dict)*de_strength), replace=False)]    # randomly select X% of the motor units to degenerate
+        de_dict = [tuple(x) for x in rng.choice(mu_dict, size=int(len(mu_dict)*vulnerability), replace=False)]      # randomly select X% of the motor units to degenerate
 
     elif de_method == "selective":
-        mu_dict = sorted(mu_dict, key=lambda x: x[0])           # sort the motor units by size
-        de_dict = mu_dict[int(len(mu_dict) * de_strength):]     # denervate the largest motor units
+        mu_dict = sorted(mu_dict, key=lambda x: x[0])               # sort the motor units by size
+        de_dict = mu_dict[int(len(mu_dict) * vulnerability):]       # denervate the largest motor units
 
     mu_dict = list(set(mu_dict) - set(de_dict))                             # remove these degenerated units from the modeled units
     mu_sizes, mu_thresholds, mu_devs = [list(x) for x in zip(*mu_dict)]     # unzip remaining motor unit properties to facilitate reinnervation calculations
-    de_sizes, de_thresholds, de_devs = [list(x) for x in zip(*de_dict)]                # unzip denervated motor unit properties to facilitate reinnervation calculations
+    de_sizes, de_thresholds, de_devs = [list(x) for x in zip(*de_dict)]     # unzip denervated motor unit properties to facilitate reinnervation calculations
     
     if re_method == "random":
-        re_sizes = rng.choice(de_sizes, size=int(len(de_sizes)*re_strength), replace=False)                         # randomly select some % of the degenerated units to reinnervate           
-        re_indices = rng.choice(list(range(len(mu_sizes))), size=int(len(de_sizes)*re_strength), replace=False)      # randomly select some % of the remaining units to compensate
+        re_sizes = rng.choice(de_sizes, size=int(len(de_sizes)*resilience), replace=False)                          # randomly select some % of the degenerated units to reinnervate           
+        re_indices = rng.choice(list(range(len(mu_sizes))), size=int(len(de_sizes)*resilience), replace=False)      # randomly select some % of the remaining units to compensate
         for i in range(len(re_sizes)):                                                                                       
             mu_sizes[re_indices[i]] += re_sizes[i]                                                                  # compensate remaining motor units
 
-    elif re_method == "distributed":
-            de_sum = sum(de_sizes)                                  # total CMAP response attributable to denervated units 
-            re_amplitude = de_sum * re_strength / len(mu_sizes)     # amount to be reinnervated by each remaining motor unit
+    elif re_method == "distributive":                                 
+            re_amplitude = sum(de_sizes) * resilience / len(mu_sizes)       # calculate equal fraction of total CMAP attributable to denervated units
             for i in range(len(mu_sizes)):
-                mu_sizes[i] += re_amplitude                         # compensate each motor unit equally
+                mu_sizes[i] += re_amplitude                                 # compensate each motor unit equally
 
     elif re_method == "selective":
-            de_sum = sum(de_sizes)                                                          # total CMAP response attributable to denervated units 
-            mu_squares = np.square(mu_sizes)                                                # square motor unit sizes to get a more exponential distribution
+            de_sum = sum(de_sizes)                                                      # total CMAP response attributable to denervated units 
+            mu_squares = np.square(mu_sizes)                                            # square motor unit sizes to get a more exponential distribution
             mu_square_sum = np.sum(mu_squares)
             for i in range(len(mu_sizes)):          
-                mu_sizes[i] += (mu_squares[i] / mu_square_sum * de_sum * re_strength)       # compensate the largest remaining motor units by the largest amount
+                mu_sizes[i] += (mu_squares[i] / mu_square_sum * de_sum * resilience)    # compensate the largest remaining motor units by the largest amount
 
     return list(zip(mu_sizes, mu_thresholds, mu_devs))      # rezip motor unit properties to facilitate synced remodeling again
 
