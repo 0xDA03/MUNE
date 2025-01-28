@@ -14,7 +14,7 @@ RE_CONDITIONS = [
                     #"none"
                 ] # none must be last
 STR_CONDITIONS = [
-                    "0.2",
+                    #"0.2",
                     "0.6"
                 ]
 PATHS = []

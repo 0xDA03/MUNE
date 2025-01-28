@@ -24,7 +24,7 @@ def generateMEM(path, filename, stimuli, responses):
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/{filename}.MEM", "w") as file:
-        file.write("Scanpts: 1, 40, 411, 450\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
+        file.write("Scanpts: 1, 40, 461, 500\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
         i = 0
         for stimulus, response in zip(stimuli, responses):
             i += 1

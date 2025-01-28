@@ -56,16 +56,16 @@ def main():
                         mu_counts.append(mu_count)
 
                         stimuli, responses = scan(mu_sizes, mu_thresholds, mu_devs, rng)            # generate the (stimulus,response) data for the scan
-                        generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)         # plot and save the (stimulus,response) data from the scan in /PLOTS
+                        # generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)         # plot and save the (stimulus,response) data from the scan in /PLOTS
                         generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)              # export scan data to MScanFit-compatible .MEM file in /MEM
-                        generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                     # export motor unit size ground truths to .txt file in /RAW
-                        generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                    # plot frequency distribution for the SMUPs
+                        # generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                     # export motor unit size ground truths to .txt file in /RAW
+                        # generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                    # plot frequency distribution for the SMUPs
                         mef_paths.append(f"{mu_count}-{i+1}")                                       # keep track of the MEM filenames for the MEF index
-                        max_cmaps.append(max(responses))                                            # store the maximal CMAP response for the trajectories
+                        # max_cmaps.append(max(responses))                                            # store the maximal CMAP response for the trajectories
 
                         mu_dict = degenerate(mu_dict, de_method, re_method, resilience, VULNERABILITY, rng)     # handle degeneration and reinnervation of motor units
                         
-                    generateTrajectory(f"{gen_path}/mu-{mu_count}", i+1, mu_counts, max_cmaps)      # generate trajectory based on change in maximal CMAP over degeneration progress
+                    # generateTrajectory(f"{gen_path}/mu-{mu_count}", i+1, mu_counts, max_cmaps)      # generate trajectory based on change in maximal CMAP over degeneration progress
 
                     re_str = resilience*100 if re_method != "none" else "0.0"                                                                       # string helper for progress bar                           
                     print_progress(i+1, len(SEEDS), f"Running '{de_method}' denervation and {re_str}% '{re_method}' reinnervation", '', 0, 50)      # display progress bar
