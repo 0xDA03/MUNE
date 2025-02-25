@@ -40,13 +40,13 @@ def generateMEF(path, filenames):
             file.write(f"{filename}\r\n")
 
 
-def generateTXT(path, filename, data):
+def generateTXT(path, filename, thresholds, sizes):
     directory = f"RAW/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/{filename}.txt", "w") as file:
-        for item in data:      
-            file.write(f"{item}\n")
+        for i in range(len(thresholds)):      
+            file.write(f"{thresholds[i]}\t{sizes[i]}\n")
 
 
 def generatePlot(path, filename, stimuli, responses):
