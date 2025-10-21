@@ -9,27 +9,30 @@ from scipy.special import erf
 from Export import *
 
 # SIMULATION PARAMETERS
-SEEDS = list(range(1,11))           # seeds for pseudo-random reproducability
+SEEDS = list(range(1,11))           # seeds for pseudo-random reproducability, one per model individual
 DE_METHODS = [                      # motor neuron degeneration methods characterized by:
-                "random",           #   random degeneration
-                "selective"         #   large-biased degeneration (selective vulnerability)
+                "random",           # random degeneration
+                "selective"         # large-biased degeneration (selective vulnerability)
             ]
 RE_METHODS = [                      # collateral reinnervation methods characterized by:
-                "random",           #   compensation via random motor units
-                "distributive",     #   compensation via distributive (evenly amongst all remaining) motor units
-                "selective",        #   compensation via selective (large-biased) motor units
-                "none",             #   no compensation
+                "random",           # compensation via random motor units
+                "distributive",     # compensation via distributive (evenly amongst all remaining) motor units
+                "selective",        # compensation via selective (large-biased) motor units
+                "none",             # no compensation
             ]
-RESILIENCE = [0.2, 0.6]             # resilience is the fraction of degenerated nerves that are to be compensated for
+RESILIENCE = [
+                0.2,
+                0.6]                # resilience is the fraction of degenerated nerves that are to be compensated for
 VULNERABILITY = 0.5                 # vulnerability represents the fraction of units denervated per step
 SAMPLES = 500                       # length of simulation (nsamples)
+FLANKS = 20                         # length of pre-scan and post-scan limit region
 NOISE = 0.01                        # additive noise deviation
 
 # MOTOR POOL PARAMETERS
 MU_COUNT = 160                  # number of motor units in the initial pool
 SMUP_MEAN = 0.0625              # single motor unit potential amplitude mean (mV)
 SMUP_MIN = 0.025                # single motor unit potential amplitude minimum (mV)
-THRESHOLD_MEAN = 26.5           # activation threshold mean (mA)
+THRESHOLD_MEAN = 10.683675      # activation threshold mean (mA)
 THRESHOLD_DEV = 2               # activation threshold deviation (gaussian) (mA)
 THRESHOLD_SPREAD = 0.0165       # relative spread of threshold
 
@@ -57,13 +60,13 @@ def main():
 
                         stimuli, responses = scan(mu_sizes, mu_thresholds, mu_devs, rng)            # generate the (stimulus,response) data for the scan
                         # generatePlot(f"{gen_path}/mu-{mu_count}", i+1 , stimuli, responses)         # plot and save the (stimulus,response) data from the scan in /PLOTS
-                        # generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)              # export scan data to MScanFit-compatible .MEM file in /MEM
-                        generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_thresholds, mu_sizes)      # export motor unit threshold, size ground truths to .txt file in /RAW
+                        generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)              # export scan data to MScanFit-compatible .MEM file in /MEM
+                        # generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_thresholds, mu_sizes)      # export motor unit threshold, size ground truths to .txt file in /RAW
                         # generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                    # plot frequency distribution for the SMUPs
                         # mef_paths.append(f"{mu_count}-{i+1}")                                       # keep track of the MEM filenames for the MEF index
                         # max_cmaps.append(max(responses))                                            # store the maximal CMAP response for the trajectories
 
-                        mu_dict = degenerate(mu_dict, de_method, re_method, resilience, VULNERABILITY, rng)     # handle degeneration and reinnervation of motor units
+                        mu_dict = degenerate(mu_dict, de_method, re_method, resilience, rng)     # handle degeneration and reinnervation of motor units
 
                     # generateTrajectory(f"{gen_path}/mu-{mu_count}", i+1, mu_counts, max_cmaps)      # generate trajectory based on change in maximal CMAP over degeneration progress
 
@@ -80,8 +83,15 @@ def scan(mu_sizes, mu_thresholds, mu_devs, rng):
     """ Generate stimulus,response CMAP data given a motor pool """
 
     stimuli = np.geomspace(min(mu_thresholds)-0.5, max(mu_thresholds)+0.5, SAMPLES)     # produce a geometric sequence of stimulus amplitudes
-    noise = rng.normal(0, NOISE, SAMPLES)                                               # generate random noise variabilities
-    
+    stimuli = np.concatenate([
+        np.repeat(min(mu_thresholds)-0.5, FLANKS),
+        stimuli,
+        np.repeat(max(mu_thresholds)+0.5, FLANKS)
+    ])
+    # showPlot(x=None, y=stimuli)
+    noise = rng.normal(0, NOISE, SAMPLES+2*FLANKS)                                               # generate random noise variabilities
+    # showPlot(x=None, y=noise)                                             
+    # plot_activation_curves(stimuli, mu_thresholds, mu_devs)
     responses = []
     for stimulus in stimuli:
         probabilities = (erf((1/(np.sqrt(2)*np.array(mu_devs)))*(stimulus-mu_thresholds))+1)/2      # calculate the firing probability for each motor unit given a stimulus
@@ -92,15 +102,15 @@ def scan(mu_sizes, mu_thresholds, mu_devs, rng):
     return stimuli, responses
 
 
-def degenerate(mu_dict, de_method, re_method, resilience, vulnerability, rng):
+def degenerate(mu_dict, de_method, re_method, resilience, rng):
     """ Handle the degeneration and reinnervation of motor units """
 
     if de_method == "random":
-        de_dict = [tuple(x) for x in rng.choice(mu_dict, size=int(len(mu_dict)*vulnerability), replace=False)]      # randomly select X% of the motor units to degenerate
+        de_dict = [tuple(x) for x in rng.choice(mu_dict, size=int(len(mu_dict)*VULNERABILITY), replace=False)]      # randomly select X% of the motor units to degenerate
 
     elif de_method == "selective":
         mu_dict = sorted(mu_dict, key=lambda x: x[0])               # sort the motor units by size
-        de_dict = mu_dict[int(len(mu_dict) * vulnerability):]       # denervate the largest motor units
+        de_dict = mu_dict[int(len(mu_dict) * VULNERABILITY):]       # denervate the largest motor units
 
     mu_dict = list(set(mu_dict) - set(de_dict))                             # remove these degenerated units from the modeled units
     mu_sizes, mu_thresholds, mu_devs = [list(x) for x in zip(*mu_dict)]     # unzip remaining motor unit properties to facilitate reinnervation calculations
@@ -136,5 +146,31 @@ def print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, le
     if iteration == total: 
         print()
 
+def plot_activation_curves(stimuli, mu_thresholds, mu_devs):
+    """
+    Visualizes the activation probability curve for each motor unit.
+    Each S-shaped curve represents a single motor unit's probability of firing
+    as the stimulus intensity increases.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Calculate and plot the probability curve for each motor unit
+    for i in range(len(mu_thresholds)):
+        threshold = mu_thresholds[i]
+        dev = mu_devs[i]
+        
+        # This is the same calculation from your scan() function
+        probabilities = (erf((1 / (np.sqrt(2) * dev)) * (stimuli - threshold)) + 1) / 2
+        
+        # Plot the curve for the current motor unit
+        # Use a low alpha to see overlapping curves
+        ax.plot(stimuli, probabilities, color='blue', alpha=0.3)
+
+    ax.set_title(f'Activation Probability Curves for {len(mu_thresholds)} Motor Units')
+    ax.set_xlabel('Stimulus Amplitude (mA)')
+    ax.set_ylabel('Probability of Firing P(fire)')
+    ax.set_ylim(0, 1)
+    ax.grid(True, linestyle='--', alpha=0.6)
+    plt.show()
 
 main()

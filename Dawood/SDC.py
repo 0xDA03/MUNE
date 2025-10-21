@@ -36,7 +36,7 @@ def sdc(paths):
     sdc_str_combined = ''
     sdcp_str_combined = ''
     for path in paths:
-        df = pd.read_csv(f"{DIR_IN}/{path}/MUNE.csv", index_col=0)
+        df = pd.read_csv(f"{DIR_IN}/{path}/MSUE (µV).csv", index_col=0)
         sd_str = ''
         cov_str = ''
         sdc_str = ''
@@ -53,33 +53,33 @@ def sdc(paths):
             sdc_str += f"{sdc},"
             sdcp = sdc/mean
             sdcp_str += f"{sdcp},"
-        with open(f"{DIR_IN}/{path}/SDpy.csv", 'w') as file:
-            file.write("MU5, MU10, MU20, MU40, MU80, MU160\n")
+        with open(f"{DIR_IN}/{path}/SDpyMSUE.csv", 'w') as file:
+            file.write("5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
             file.write(sd_str)
-        with open(f"{DIR_IN}/{path}/COVpy.csv", 'w') as file:
-            file.write("MU5, MU10, MU20, MU40, MU80, MU160\n")
+        with open(f"{DIR_IN}/{path}/COVpyMSUE.csv", 'w') as file:
+            file.write("5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
             file.write(cov_str)
-        with open(f"{DIR_IN}/{path}/SDCpy.csv", 'w') as file:
-            file.write("MU5, MU10, MU20, MU40, MU80, MU160\n")
+        with open(f"{DIR_IN}/{path}/SDCpyMSUE.csv", 'w') as file:
+            file.write("5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
             file.write(sdc_str)
-        with open(f"{DIR_IN}/{path}/SDCPpy.csv", 'w') as file:
-            file.write("MU5, MU10, MU20, MU40, MU80, MU160\n")
+        with open(f"{DIR_IN}/{path}/SDCPpyMSUE.csv", 'w') as file:
+            file.write("5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
             file.write(sdcp_str)
         sd_str_combined += f"{path},{sd_str}\n" 
         cov_str_combined += f"{path},{cov_str}\n"
         sdc_str_combined += f"{path},{sdc_str}\n"
         sdcp_str_combined += f"{path},{sdcp_str}\n"
-    with open(f"{DIR_IN}/SDpy.csv", 'w') as file:
-        file.write(", MU5, MU10, MU20, MU40, MU80, MU160\n")
+    with open(f"{DIR_IN}/SDpyMSUE.csv", 'w') as file:
+        file.write(", 5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
         file.write(sd_str_combined)
-    with open(f"{DIR_IN}/COVpy.csv", 'w') as file:
-        file.write(", MU5, MU10, MU20, MU40, MU80, MU160\n")
+    with open(f"{DIR_IN}/COVpyMSUE.csv", 'w') as file:
+        file.write(", 5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
         file.write(cov_str_combined)
-    with open(f"{DIR_IN}/SDCpy.csv", 'w') as file:
-        file.write(", MU5, MU10, MU20, MU40, MU80, MU160\n")
+    with open(f"{DIR_IN}/SDCpyMSUE.csv", 'w') as file:
+        file.write(", 5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
         file.write(sdc_str_combined)
-    with open(f"{DIR_IN}/SDCPpy.csv", 'w') as file:
-        file.write(", MU5, MU10, MU20, MU40, MU80, MU160\n")
+    with open(f"{DIR_IN}/SDCPpyMSUE.csv", 'w') as file:
+        file.write(", 5MU, 10MU, 20MU, 40Mu, 80MU, 160MU\n")
         file.write(sdcp_str_combined)
 
 sdc(PATHS)

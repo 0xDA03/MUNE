@@ -1,7 +1,9 @@
 import os
 import plotly.graph_objects as graph
 import plotly.express as px
+import matplotlib.pyplot as plt
 
+MEM_PATH = "MEM-Oct10"
 
 def generateDAT(path, filename, stimuli, responses):
     """ Export stimulus-response data from simulation to MScanFit-compatible .DAT file
@@ -20,11 +22,11 @@ def generateDAT(path, filename, stimuli, responses):
 
 
 def generateMEM(path, filename, stimuli, responses):
-    directory = f"MEM/{path}"
+    directory = f"{MEM_PATH}/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/{filename}.MEM", "w") as file:
-        file.write("Scanpts: 1, 40, 461, 500\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
+        file.write("Scanpts: 1, 20, 481, 500\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
         i = 0
         for stimulus, response in zip(stimuli, responses):
             i += 1
@@ -32,7 +34,7 @@ def generateMEM(path, filename, stimuli, responses):
 
 
 def generateMEF(path, filenames):
-    directory = f"MEM/{path}"
+    directory = f"{MEM_PATH}/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/batch.MEF", "w") as file:
@@ -58,14 +60,14 @@ def generatePlot(path, filename, stimuli, responses):
         xaxis=dict(
             title="Stimulus Intensity (mA)",
             color="black",                # Black x-axis line and labels
-            showgrid=False,                # Show only main gridline for x-axis
+            showgrid=False,               # Show only main gridline for x-axis
             zeroline=True,                # Show main gridline at zero
             zerolinecolor="black"         # Make zero line black
         ),
         yaxis=dict(
             title="CMAP Amplitude (mV)",
             color="black",                # Black y-axis line and labels
-            showgrid=False,                # Show only main gridline for y-axis
+            showgrid=False,               # Show only main gridline for y-axis
             zeroline=True,                # Show main gridline at zero
             zerolinecolor="black"         # Make zero line black
         )
@@ -102,3 +104,22 @@ def generateDist(path, filename, data):
     directory = f"DISTS/{path}"
     os.makedirs(directory, exist_ok=True)
     fig.write_image(f"{directory}/{filename}.png")
+
+def showDist(data):
+    fig = px.histogram(x=data, nbins=15)
+    # fig.update_traces(xbins=dict(
+    #     start=0,  # Start of the bins
+    #     end=0.5,   # End of the bins
+    #     size=0.02  # Size of each bin
+    # ))
+    # fig.update_layout(xaxis=dict(range=[0, 0.6]))
+
+    fig.show()
+
+def showPlot(x, y):
+    plt.figure()
+    plt.plot(y, marker='o', linestyle='none')
+    plt.xlabel('Index')
+    plt.ylabel('Value')
+    plt.grid(True)
+    plt.show()
