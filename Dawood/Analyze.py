@@ -8,21 +8,22 @@ from scipy.optimize import linear_sum_assignment
 
 DE_CONDITIONS = [
                     "random",
-                    "selective"
+                    # "selective"
                 ]
 RE_CONDITIONS = [
                     "random",
-                    "selective",
-                    "distributive",
-                    "none"
+                    # "selective",
+                    # "distributive",
+                    # "none"
                 ] # none must be last
 STR_CONDITIONS = [
                     "0.2",
-                    "0.6"
+                    # "0.6"
                 ]
 
-DIR_IN = "MEM-RS2.0"                      #### EDIT THIS DEPENDING ON DATASET PROPERTIES
-DIR_OUT = "ANALYSIS/MEM-RS2.0"     #### EDIT THIS DEPENDING ON DATASET PROPERTIES
+DIR_IN = "N30/MEM-Oct24"                      #### EDIT THIS DEPENDING ON DATASET PROPERTIES
+RAW_IN = "N30/RAW"
+DIR_OUT = "N30/ANALYSIS/MEM-RS2.0"     #### EDIT THIS DEPENDING ON DATASET PROPERTIES
 
 PATHS = []
 
@@ -76,7 +77,7 @@ def main():
                                 mune_thresholds.append(round(float(values[2]), 4))
                                 mune_sizes.append(round(float(values[3]) * mune_scale, 4))      # get the MUSEs
 
-                with open(f"RAW/{path}/mu-{mu_count}/{iteration}.txt", 'r') as file:
+                with open(f"{RAW_IN}/{path}/mu-{mu_count}/{iteration}.txt", 'r') as file:
                     for line in file:
                         mu_thresholds.append(round(float(line.split('\t')[0]), 4))
                         mu_sizes.append(round(float(line.split('\t')[1]), 4))      # get the actual MU sizes from the RAW data (ground truth)
@@ -107,15 +108,15 @@ def main():
                     print(f"missing values: {path}/{mu_count}-{iteration}")
 
                 # # Plot stuff
-                directory = f"{DIR_OUT}/{path}/mu-{mu_count}"
-                os.makedirs(directory, exist_ok=True)
-                fig = graph.Figure()
-                fig.update_layout(title=f"MUNE={mune}-{sum(mune_sizes)} | RAW={mu_count}-{sum(mu_sizes)}", xaxis_title="Motor Unit",  yaxis_title="Amplitude (mV)")
-                fig.add_trace(graph.Scatter(x=list(range(1,len(mune_sizes)+1)), y=sorted(mune_sizes), mode="markers", name="MUNE"))
-                fig.add_trace(graph.Scatter(x=list(range(1,len(mu_sizes)+1)),y=sorted(mu_sizes), mode="markers", name = "RAW"))
-                fig.write_image(f"{directory}/{iteration}.png")
+                # directory = f"{DIR_OUT}/{path}/mu-{mu_count}"
+                # os.makedirs(directory, exist_ok=True)
+                # fig = graph.Figure()
+                # fig.update_layout(title=f"MUNE={mune}-{sum(mune_sizes)} | RAW={mu_count}-{sum(mu_sizes)}", xaxis_title="Motor Unit",  yaxis_title="Amplitude (mV)")
+                # fig.add_trace(graph.Scatter(x=list(range(1,len(mune_sizes)+1)), y=sorted(mune_sizes), mode="markers", name="MUNE"))
+                # fig.add_trace(graph.Scatter(x=list(range(1,len(mu_sizes)+1)),y=sorted(mu_sizes), mode="markers", name = "RAW"))
+                # fig.write_image(f"{directory}/{iteration}.png")
 
-                analyze_size(directory, iteration, mune, mu_count, mune_thresholds, mune_sizes, mu_thresholds, mu_sizes)
+                # analyze_size(directory, iteration, mune, mu_count, mune_thresholds, mune_sizes, mu_thresholds, mu_sizes)
 
         try:
             df = pd.DataFrame(data)                                                 # convert the data dictionary to a readable dataframe
@@ -129,8 +130,8 @@ def main():
             print(f"summary not created: {path}")
 
     for measure in measures:
-        aggregate[measure]["de-random/re-selective/str-0.2"].append({5: None})
-        aggregate[measure]["de-random/re-none/str-0.2"].append({5: None})
+        # aggregate[measure]["de-random/re-selective/str-0.2"].append({5: None})
+        # aggregate[measure]["de-random/re-none/str-0.2"].append({5: None})
         for key in aggregate[measure]:
             aggregate[measure][key] = sorted(aggregate[measure][key], key=lambda x: list(x.keys())[0])
         df = pd.DataFrame.from_dict(aggregate[measure], orient="index").transpose()
@@ -138,98 +139,100 @@ def main():
         short_cols = [f"{''.join([word.split('-')[1][0] for word in col.split('/')[0:2]])}{col[-1]}0" for col in df.columns]
         df.to_csv(f"{DIR_OUT}/{measure}.csv", header=short_cols)
 
-        df_temp = df.__deepcopy__()
-        df_temp.columns = short_cols
-        df_temp = df_temp.melt(var_name="group", value_name="value")
-        test = dabest.load(data=df_temp, x="group", y="value", idx=tuple(short_cols))
-        fig = test.mean_diff.plot(raw_marker_size=3)
-        plt.savefig(f"{DIR_OUT}/{measure}.png")
+        # DABEST STUFF
+        # df_temp = df.__deepcopy__()
+        # df_temp.columns = short_cols
+        # df_temp = df_temp.melt(var_name="group", value_name="value")
+        # test = dabest.load(data=df_temp, x="group", y="value", idx=tuple(short_cols))
+        # fig = test.mean_diff.plot(raw_marker_size=3)
+        # plt.savefig(f"{DIR_OUT}/{measure}.png")
 
-        for col in df.columns:
-            temp = [[] for _ in range(6)]
-            for i in range(len(df[col])):
-                temp[i // 10].append(df[col].iloc[i])
-            df_temp = pd.DataFrame(temp, [5, 10, 20, 40, 80, 160]).transpose()
-            df_temp.columns = [f"MU{col}" for col in df_temp.columns]
-            df_temp.to_csv(f"{DIR_OUT}/{col}/{measure}.csv")
+        # for col in df.columns:
+        #     temp = [[] for _ in range(6)]
+        #     for i in range(len(df[col])):
+        #         temp[i // 10].append(df[col].iloc[i])
+        #     df_temp = pd.DataFrame(temp, [5, 10, 20, 40, 80, 160]).transpose()
+        #     df_temp.columns = [f"MU{col}" for col in df_temp.columns]
+        #     df_temp.to_csv(f"{DIR_OUT}/{col}/{measure}.csv")
 
-            df_temp = df_temp.melt(var_name="group", value_name="value")
-            test = dabest.load(data=df_temp, x="group", y="value", idx=("MU5", "MU10", "MU20", "MU40", "MU80", "MU160"))
-            fig = test.mean_diff.plot(raw_marker_size=3)
-            plt.savefig(f"{DIR_OUT}/{col}/{measure}.png")
+            # DABEST STUFF
+            # df_temp = df_temp.melt(var_name="group", value_name="value")
+            # test = dabest.load(data=df_temp, x="group", y="value", idx=("MU5", "MU10", "MU20", "MU40", "MU80", "MU160"))
+            # fig = test.mean_diff.plot(raw_marker_size=3)
+            # plt.savefig(f"{DIR_OUT}/{col}/{measure}.png")
 
-def euclid(x1, y1, x2, y2):
-    length = max([len(x1), len(x2)])
-    matrix = []
-    for i in range(length):
-        matrix.append([])
-        for j in range(length):
-            try:
-                matrix[i].append(np.sqrt((x1[i]-x2[j])**2 + (y1[i]-y2[j])**2))
-            except:
-                matrix[i].append(100)
-    return matrix
+# def euclid(x1, y1, x2, y2):
+#     length = max([len(x1), len(x2)])
+#     matrix = []
+#     for i in range(length):
+#         matrix.append([])
+#         for j in range(length):
+#             try:
+#                 matrix[i].append(np.sqrt((x1[i]-x2[j])**2 + (y1[i]-y2[j])**2))
+#             except:
+#                 matrix[i].append(100)
+#     return matrix
 
-def hungarian(matrix):
-    matrix = np.array(matrix)
-    row, col = linear_sum_assignment(matrix)
-    cost = matrix[row, col].sum()
-    return row, col, cost
+# def hungarian(matrix):
+#     matrix = np.array(matrix)
+#     row, col = linear_sum_assignment(matrix)
+#     cost = matrix[row, col].sum()
+#     return row, col, cost
 
-def analyze_size(directory, iteration, mune, mu_count, mune_thresholds, mune_sizes, mu_thresholds, mu_sizes):
+# def analyze_size(directory, iteration, mune, mu_count, mune_thresholds, mune_sizes, mu_thresholds, mu_sizes):
 
-    #Plot stuff
-    fig = graph.Figure()
-    fig.update_layout(title=f"MUNE={mune}-{sum(mune_sizes)} | GROUND TRUTH={mu_count}-{sum(mu_sizes)}", xaxis_title="Threshold Mean (mA)",  yaxis_title="Amplitude (mV)")
-    fig.add_trace(graph.Scatter(x=mune_thresholds, y=mune_sizes, mode="markers", name="MUNE"))
-    fig.add_trace(graph.Scatter(x=mu_thresholds,y=mu_sizes, mode="markers", name = "GROUND TRUTH"))
-    fig.write_image(f"{directory}/{iteration}-unsorted.png")
+#     #Plot stuff
+#     fig = graph.Figure()
+#     fig.update_layout(title=f"MUNE={mune}-{sum(mune_sizes)} | GROUND TRUTH={mu_count}-{sum(mu_sizes)}", xaxis_title="Threshold Mean (mA)",  yaxis_title="Amplitude (mV)")
+#     fig.add_trace(graph.Scatter(x=mune_thresholds, y=mune_sizes, mode="markers", name="MUNE"))
+#     fig.add_trace(graph.Scatter(x=mu_thresholds,y=mu_sizes, mode="markers", name = "GROUND TRUTH"))
+#     fig.write_image(f"{directory}/{iteration}-unsorted.png")
 
-    length = max([len(mune_thresholds), len(mu_thresholds)])
-    matrix = []
-    for i in range(length):
-        matrix.append([])
-        for j in range(length):
-            try:
-                matrix[i].append(np.sqrt((mune_thresholds[i]-mu_thresholds[j])**2 + (mune_sizes[i]-mu_sizes[j])**2))
-            except:
-                matrix[i].append(100)
+#     length = max([len(mune_thresholds), len(mu_thresholds)])
+#     matrix = []
+#     for i in range(length):
+#         matrix.append([])
+#         for j in range(length):
+#             try:
+#                 matrix[i].append(np.sqrt((mune_thresholds[i]-mu_thresholds[j])**2 + (mune_sizes[i]-mu_sizes[j])**2))
+#             except:
+#                 matrix[i].append(100)
 
-    matrix = np.array(matrix)
-    row, col = linear_sum_assignment(matrix)
-    cost = matrix[row, col].sum()
+#     matrix = np.array(matrix)
+#     row, col = linear_sum_assignment(matrix)
+#     cost = matrix[row, col].sum()
 
-    matrix = euclid(mune_thresholds, mune_sizes, mu_thresholds, mu_sizes)
-    row, col, cost = hungarian(matrix)
-    # test = []
-    for i in range(len(row)):
-        print(f"Row {row[i]} matched to column {col[i]}")
-        print(f"minimum cost: {cost}")
-        ## test.append([mune_thresholds[row[i]], mune_sizes[row[i]], mu_thresholds[col[i]], mu_sizes[col[i]]])
+#     matrix = euclid(mune_thresholds, mune_sizes, mu_thresholds, mu_sizes)
+#     row, col, cost = hungarian(matrix)
+#     # test = []
+#     for i in range(len(row)):
+#         print(f"Row {row[i]} matched to column {col[i]}")
+#         print(f"minimum cost: {cost}")
+#         ## test.append([mune_thresholds[row[i]], mune_sizes[row[i]], mu_thresholds[col[i]], mu_sizes[col[i]]])
     
-    with open(f"{directory}/{iteration}.txt", 'w') as file:
-        file.write(f"MUNE size mean: {np.mean(mune_sizes)}\n")
-        file.write(f"MU size mean: {np.mean(mu_sizes)}\n")
+#     with open(f"{directory}/{iteration}.txt", 'w') as file:
+#         file.write(f"MUNE size mean: {np.mean(mune_sizes)}\n")
+#         file.write(f"MU size mean: {np.mean(mu_sizes)}\n")
 
-        abs_diff = []
-        for i in range(length):
-            row_i = row[i]
-            col_i = col[i]
+#         abs_diff = []
+#         for i in range(length):
+#             row_i = row[i]
+#             col_i = col[i]
 
-            if len(mune_thresholds) < length:
-                mune_unit = f"MUNE unit {row_i + 1}" if row_i < len(mune_thresholds) else "Dummy unit"
-                mu_unit = f"Real unit {col_i + 1}"
-            elif len(mu_thresholds) < length:
-                mune_unit = f"MUNE unit {row_i + 1}"
-                mu_unit = f"Real unit {col_i + 1}" if col_i < len(mu_thresholds) else "Dummy unit"
-            else:
-                mune_unit = f"MUNE unit {row_i + 1}"
-                mu_unit = f"Real unit {col_i + 1}"
-            file.write(f"{mune_unit} <-> {mu_unit}\n")
+#             if len(mune_thresholds) < length:
+#                 mune_unit = f"MUNE unit {row_i + 1}" if row_i < len(mune_thresholds) else "Dummy unit"
+#                 mu_unit = f"Real unit {col_i + 1}"
+#             elif len(mu_thresholds) < length:
+#                 mune_unit = f"MUNE unit {row_i + 1}"
+#                 mu_unit = f"Real unit {col_i + 1}" if col_i < len(mu_thresholds) else "Dummy unit"
+#             else:
+#                 mune_unit = f"MUNE unit {row_i + 1}"
+#                 mu_unit = f"Real unit {col_i + 1}"
+#             file.write(f"{mune_unit} <-> {mu_unit}\n")
 
-            if mune_unit != "Dummy unit" and mu_unit != "Dummy unit":
-                abs_diff.append(abs(mune_sizes[row_i] - mu_sizes[col_i]))
-        mae = np.mean(abs_diff)
-        file.write(f"Mean absolute error: {mae}\n")
+#             if mune_unit != "Dummy unit" and mu_unit != "Dummy unit":
+#                 abs_diff.append(abs(mune_sizes[row_i] - mu_sizes[col_i]))
+#         mae = np.mean(abs_diff)
+#         file.write(f"Mean absolute error: {mae}\n")
 
 main()

@@ -3,7 +3,8 @@ import plotly.graph_objects as graph
 import plotly.express as px
 import matplotlib.pyplot as plt
 
-MEM_PATH = "MEM-Oct10"
+PRE_PATH = 'N30/'   # end with '/' if not empty
+MEM_PATH = "MEM-Oct24"
 
 def generateDAT(path, filename, stimuli, responses):
     """ Export stimulus-response data from simulation to MScanFit-compatible .DAT file
@@ -13,7 +14,7 @@ def generateDAT(path, filename, stimuli, responses):
             responses - y-axis resposne (mV) data
     """
     
-    directory = f"DAT/{path}"                   # set an appropriate path for the data
+    directory = f"{PRE_PATH}DAT/{path}"                   # set an appropriate path for the data
     os.makedirs(directory, exist_ok=True)       # ensure all intermediate directories are created
 
     with open(f"{directory}/{filename}.DAT", "w") as file:
@@ -22,11 +23,11 @@ def generateDAT(path, filename, stimuli, responses):
 
 
 def generateMEM(path, filename, stimuli, responses):
-    directory = f"{MEM_PATH}/{path}"
+    directory = f"{PRE_PATH}{MEM_PATH}/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/{filename}.MEM", "w") as file:
-        file.write("Scanpts: 1, 20, 481, 500\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
+        file.write("Scanpts: 1, 20, 521, 540\r\n")      # indicates the pre-scan and post-scan limits, these work for our scan of 450
         i = 0
         for stimulus, response in zip(stimuli, responses):
             i += 1
@@ -34,7 +35,7 @@ def generateMEM(path, filename, stimuli, responses):
 
 
 def generateMEF(path, filenames):
-    directory = f"{MEM_PATH}/{path}"
+    directory = f"{PRE_PATH}{MEM_PATH}/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/batch.MEF", "w") as file:
@@ -43,7 +44,7 @@ def generateMEF(path, filenames):
 
 
 def generateTXT(path, filename, thresholds, sizes):
-    directory = f"RAW/{path}"
+    directory = f"{PRE_PATH}RAW/{path}"
     os.makedirs(directory, exist_ok=True)
 
     with open(f"{directory}/{filename}.txt", "w") as file:
@@ -73,7 +74,7 @@ def generatePlot(path, filename, stimuli, responses):
         )
     )
 
-    directory = f"PLOTS/{path}"
+    directory = f"{PRE_PATH}PLOTS/{path}"
     os.makedirs(directory, exist_ok=True)
     fig.write_image(f"{directory}/{filename}.png")      # save the plot to the specified path
 
@@ -87,7 +88,7 @@ def generateTrajectory(path, filename, mu_counts, max_CMAPs):
                                 textposition="top center"))
     fig.update_layout(yaxis_range=[0, 12])
 
-    directory = f"TRAJECTORIES/{path}"
+    directory = f"{PRE_PATH}TRAJECTORIES/{path}"
     os.makedirs(directory, exist_ok=True)
     fig.write_image(f"{directory}/{filename}.png")
 
@@ -101,7 +102,7 @@ def generateDist(path, filename, data):
     # ))
     # fig.update_layout(xaxis=dict(range=[0, 0.6]))
 
-    directory = f"DISTS/{path}"
+    directory = f"{PRE_PATH}DISTS/{path}"
     os.makedirs(directory, exist_ok=True)
     fig.write_image(f"{directory}/{filename}.png")
 
