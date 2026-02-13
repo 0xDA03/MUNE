@@ -30,10 +30,10 @@ NOISE = 0.01                        # additive noise deviation
 
 # MOTOR POOL PARAMETERS
 MU_COUNT = 160                  # number of motor units in the initial pool
-SMUP_MEAN = 0.0625              # single motor unit potential amplitude mean (mV)
+SMUP_MEAN = 0.075936            # single motor unit potential amplitude mean (mV)
 SMUP_MIN = 0.025                # single motor unit potential amplitude minimum (mV)
-THRESHOLD_MEAN = 10.683675      # activation threshold mean (mA)
-THRESHOLD_DEV = 2               # activation threshold deviation (gaussian) (mA)
+THRESHOLD_MEAN = 11.623985      # activation threshold mean (mA)
+THRESHOLD_DEV = 1.555005        # activation threshold deviation (gaussian) (mA)
 THRESHOLD_SPREAD = 0.0165       # relative spread of threshold
 
 
@@ -63,7 +63,7 @@ def main():
                         generateMEM(gen_path, f"{mu_count}-{i+1}", stimuli, responses)              # export scan data to MScanFit-compatible .MEM file in /MEM
                         generateTXT(f"{gen_path}/mu-{mu_count}", i+1, mu_thresholds, mu_sizes)      # export motor unit threshold, size ground truths to .txt file in /RAW
                         # generateDist(f"{gen_path}/mu-{mu_count}", i+1, mu_sizes)                    # plot frequency distribution for the SMUPs
-                        mef_paths.append(f"{mu_count}-{i+1}")                                       # keep track of the MEM filenames for the MEF index
+                        # mef_paths.append(f"{mu_count}-{i+1}")                                       # keep track of the MEM filenames for the MEF index
                         # max_cmaps.append(max(responses))                                            # store the maximal CMAP response for the trajectories
 
                         mu_dict = degenerate(mu_dict, de_method, re_method, resilience, rng)     # handle degeneration and reinnervation of motor units
@@ -73,7 +73,7 @@ def main():
                     re_str = resilience*100 if re_method != "none" else "0.0"                                                                       # string helper for progress bar                           
                     print_progress(i+1, len(SEEDS), f"Running '{de_method}' denervation and {re_str}% '{re_method}' reinnervation", '', 0, 50)      # display progress bar
                 
-                generateMEF(gen_path, mef_paths)    # create the MEF index for all MEM files produced in the given condition
+                # generateMEF(gen_path, mef_paths)    # create the MEF index for all MEM files produced in the given condition
 
                 if re_method == "none":
                     break   # break unnecessary loop of varying reinnervation strengths when there is no compensation 
